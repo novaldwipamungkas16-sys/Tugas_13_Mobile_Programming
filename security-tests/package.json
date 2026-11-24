@@ -1,0 +1,1 @@
+{"name":"lkm-security-tests","private":true,"type":"module","scripts":{"test":"node rules.test.mjs && node claims.test.mjs"},"dependencies":{"@firebase/rules-unit-testing":"6.0.0","firebase":"13.4.0"},"overrides":{"@grpc/grpc-js":"1.14.7"}}

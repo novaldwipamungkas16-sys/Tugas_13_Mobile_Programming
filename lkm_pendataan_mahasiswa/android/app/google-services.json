@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "780221665045",
+    "project_id": "lkm-mahasiswa-t13-noval",
+    "storage_bucket": "lkm-mahasiswa-t13-noval.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:780221665045:android:6ad670bdc3434e7852e31c",
+        "android_client_info": {
+          "package_name": "com.example.lkm_pendataan_mahasiswa"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA3skPvFGT46nNCJE1la-bcgZMeYnZ44iw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

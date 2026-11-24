@@ -1,0 +1,65 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isMember() {
+      return request.auth != null
+        && request.auth.token.firebase.sign_in_provider != 'anonymous';
+    }
+
+    function isAdmin() {
+      return isMember() && request.auth.token.get('admin', false) == true;
+    }
+
+    function validStudent(d) {
+      return d.keys().hasAll([
+          'ownerUid', 'nim', 'nama', 'prodi', 'angkatan',
+          'createdAt', 'updatedAt'
+        ])
+        && d.keys().hasOnly([
+          'ownerUid', 'nim', 'nama', 'prodi', 'angkatan',
+          'createdAt', 'updatedAt'
+        ])
+        && d.ownerUid is string
+        && d.ownerUid.size() <= 128
+        && d.nim is string
+        && d.nim.size() >= 5 && d.nim.size() <= 20
+        && d.nama is string
+        && d.nama.size() >= 1 && d.nama.size() <= 100
+        && d.prodi is string
+        && d.prodi.size() >= 1 && d.prodi.size() <= 80
+        && d.angkatan is int
+        && d.angkatan >= 2000 && d.angkatan <= 2100
+        && d.createdAt is timestamp
+        && d.updatedAt is timestamp;
+    }
+
+    match /mahasiswa/{studentId} {
+      // Baca dokumen sendiri juga harus diizinkan saat belum dibuat.
+      allow get: if isAdmin()
+        || (isMember() && studentId == request.auth.uid);
+      allow list: if isAdmin();
+
+      allow create: if validStudent(request.resource.data)
+        && (isAdmin()
+          || (isMember()
+            && studentId == request.auth.uid
+            && request.resource.data.ownerUid == request.auth.uid));
+
+      allow update: if validStudent(request.resource.data)
+        && (isAdmin()
+          || (isMember()
+            && studentId == request.auth.uid
+            && resource.data.ownerUid == request.auth.uid
+            && request.resource.data.ownerUid == resource.data.ownerUid
+            && request.resource.data.createdAt == resource.data.createdAt
+            && request.resource.data.nim == resource.data.nim));
+
+      allow delete: if isAdmin();
+    }
+
+    // Semua koleksi lain tertutup, termasuk untuk tamu anonim.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

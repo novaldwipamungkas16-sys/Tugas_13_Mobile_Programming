@@ -1,0 +1,22 @@
+# Dependencies and build caches
+**/node_modules/
+**/build/
+**/.dart_tool/
+**/.gradle/
+**/.kotlin/
+**/local.properties
+**/.flutter-plugins-dependencies
+# Privileged credentials and secrets
+**/serviceAccount*.json
+**/*service-account*.json
+**/*private-key*
+**/.env
+**/.env.*
+**/*credentials*.json
+**/*.jks
+**/*.keystore
+# Runtime/debug logs not part of curated evidence
+firebase-debug.log*
+firestore-debug.log
+**/hs_err_pid*.log
+**/replay_pid*.log
